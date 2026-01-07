@@ -1,0 +1,133 @@
+#include <iostream>
+using namespace std;
+
+
+struct Doctor {
+    int id;
+    string name;
+    string schedule;
+    int salary;
+};
+
+struct Patient {
+    int id;
+    string name;
+    int age;
+};
+
+struct Appointment {
+    int patientId;
+    int doctorId;
+    string date;
+};
+
+struct Bill {
+    int patientId;
+    int amount;
+};
+
+
+Doctor doctors[5];
+Patient patients[10];
+Appointment appointments[10];
+Bill bills[10];
+
+int doctorCount = 0;
+int patientCount = 0;
+int appointmentCount = 0;
+int billCount = 0;
+
+
+void addDoctor() {
+    cout << "Enter Doctor ID: ";
+    cin >> doctors[doctorCount].id;
+    cout << "Enter Doctor Name: ";
+    cin >> doctors[doctorCount].name;
+    cout << "Enter Doctor Schedule: ";
+    cin >> doctors[doctorCount].schedule;
+    cout << "Enter Doctor Salary: ";
+    cin >> doctors[doctorCount].salary;
+    doctorCount++;
+    cout << "Doctor added successfully!\n";
+}
+
+void addPatient() {
+    cout << "Enter Patient ID: ";
+    cin >> patients[patientCount].id;
+    cout << "Enter Patient Name: ";
+    cin >> patients[patientCount].name;
+    cout << "Enter Patient Age: ";
+    cin >> patients[patientCount].age;
+    patientCount++;
+    cout << "Patient added successfully!";
+}
+
+void makeAppointment() {
+    cout << "Enter Patient ID: ";
+    cin >> appointments[appointmentCount].patientId;
+    cout << "Enter Doctor ID: ";
+    cin >> appointments[appointmentCount].doctorId;
+    cout << "Enter Appointment Date: ";
+    cin >> appointments[appointmentCount].date;
+    appointmentCount++;
+    cout << "Appointment booked successfully!";
+}
+
+void generateBill() {
+    cout << "Enter Patient ID: ";
+    cin >> bills[billCount].patientId;
+    cout << "Enter Bill Amount: ";
+    cin >> bills[billCount].amount;
+    billCount++;
+    cout << "Bill generated successfully!";
+}
+
+void viewDoctors() {
+    cout << "Doctor List ";
+    for (int i = 0; i < doctorCount; i++) {
+        cout << "ID: " << doctors[i].id
+             << " Name: " << doctors[i].name
+             << "Schedule: " << doctors[i].schedule
+             << " Salary: " << doctors[i].salary << endl;
+    }
+}
+
+void viewPatients() {
+    cout << " Patient List ";
+    for (int i = 0; i < patientCount; i++) {
+        cout << "ID: " << patients[i].id
+             << "Name: " << patients[i].name
+             << "Age: " << patients[i].age << endl;
+    }
+}
+
+
+int main() {
+    int choice;
+
+    do {
+        cout << " Hospital Management System ";
+        cout << "1. Add Doctor";
+        cout << "2. Add Patient";
+        cout << "3. Make Appointment";
+        cout << "4. Generate Bill";
+        cout << "5. View Doctors";
+        cout << "6. View Patients";
+        cout << "0. Exit";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addDoctor(); break;
+            case 2: addPatient(); break;
+            case 3: makeAppointment(); break;
+            case 4: generateBill(); break;
+            case 5: viewDoctors(); break;
+            case 6: viewPatients(); break;
+            case 0: cout << "Exiting program"; break;
+            default: cout << "Invalid choice!";
+        }
+    } while (choice != 0);
+
+    return 0;
+}
