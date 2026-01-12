@@ -1,6 +1,6 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
-
 
 struct Doctor {
     int id;
@@ -26,7 +26,6 @@ struct Bill {
     int amount;
 };
 
-
 Doctor doctors[5];
 Patient patients[10];
 Appointment appointments[10];
@@ -38,6 +37,33 @@ int appointmentCount = 0;
 int billCount = 0;
 
 
+
+void saveDoctorToFile(Doctor d) {
+    ofstream file("doctors.txt", ios::app);
+    file << d.id << " " << d.name << " " << d.schedule << " " << d.salary << endl;
+    file.close();
+}
+
+void savePatientToFile(Patient p) {
+    ofstream file("patients.txt", ios::app);
+    file << p.id << " " << p.name << " " << p.age << endl;
+    file.close();
+}
+
+void saveAppointmentToFile(Appointment a) {
+    ofstream file("appointments.txt", ios::app);
+    file << a.patientId << " " << a.doctorId << " " << a.date << endl;
+    file.close();
+}
+
+void saveBillToFile(Bill b) {
+    ofstream file("bills.txt", ios::app);
+    file << b.patientId << " " << b.amount << endl;
+    file.close();
+}
+
+
+
 void addDoctor() {
     cout << "Enter Doctor ID: ";
     cin >> doctors[doctorCount].id;
@@ -47,8 +73,11 @@ void addDoctor() {
     cin >> doctors[doctorCount].schedule;
     cout << "Enter Doctor Salary: ";
     cin >> doctors[doctorCount].salary;
+
+    saveDoctorToFile(doctors[doctorCount]);
     doctorCount++;
-    cout << "Doctor added successfully!\n";
+
+    cout << "Doctor added successfully!";
 }
 
 void addPatient() {
@@ -58,7 +87,10 @@ void addPatient() {
     cin >> patients[patientCount].name;
     cout << "Enter Patient Age: ";
     cin >> patients[patientCount].age;
+
+    savePatientToFile(patients[patientCount]);
     patientCount++;
+
     cout << "Patient added successfully!";
 }
 
@@ -69,7 +101,10 @@ void makeAppointment() {
     cin >> appointments[appointmentCount].doctorId;
     cout << "Enter Appointment Date: ";
     cin >> appointments[appointmentCount].date;
+
+    saveAppointmentToFile(appointments[appointmentCount]);
     appointmentCount++;
+
     cout << "Appointment booked successfully!";
 }
 
@@ -78,35 +113,49 @@ void generateBill() {
     cin >> bills[billCount].patientId;
     cout << "Enter Bill Amount: ";
     cin >> bills[billCount].amount;
+
+    saveBillToFile(bills[billCount]);
     billCount++;
+
     cout << "Bill generated successfully!";
 }
 
+
+
 void viewDoctors() {
-    cout << "Doctor List ";
-    for (int i = 0; i < doctorCount; i++) {
-        cout << "ID: " << doctors[i].id
-             << " Name: " << doctors[i].name
-             << "Schedule: " << doctors[i].schedule
-             << " Salary: " << doctors[i].salary << endl;
+    Doctor d;
+    ifstream file("doctors.txt");
+    cout << "Doctor List:";
+
+    while (file >> d.id >> d.name >> d.schedule >> d.salary) {
+        cout << "ID: " << d.id
+             << " Name: " << d.name
+             << " Schedule: " << d.schedule
+             << " Salary: " << d.salary << endl;
     }
+    file.close();
 }
 
 void viewPatients() {
-    cout << " Patient List ";
-    for (int i = 0; i < patientCount; i++) {
-        cout << "ID: " << patients[i].id
-             << "Name: " << patients[i].name
-             << "Age: " << patients[i].age << endl;
+    Patient p;
+    ifstream file("patients.txt");
+    cout << "Patient List:";
+
+    while (file >> p.id >> p.name >> p.age) {
+        cout << "ID: " << p.id
+             << " Name: " << p.name
+             << " Age: " << p.age << endl;
     }
+    file.close();
 }
+
 
 
 int main() {
     int choice;
 
     do {
-        cout << " Hospital Management System ";
+        cout << "--- Hospital Management System ---";
         cout << "1. Add Doctor";
         cout << "2. Add Patient";
         cout << "3. Make Appointment";
@@ -124,9 +173,10 @@ int main() {
             case 4: generateBill(); break;
             case 5: viewDoctors(); break;
             case 6: viewPatients(); break;
-            case 0: cout << "Exiting program"; break;
+            case 0: cout << "Exiting program..."; break;
             default: cout << "Invalid choice!";
         }
+
     } while (choice != 0);
 
     return 0;
